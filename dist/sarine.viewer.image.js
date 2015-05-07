@@ -1,6 +1,6 @@
 
 /*!
-sarine.viewer.image - v0.1.1 -  Thursday, May 7th, 2015, 9:19:39 AM 
+sarine.viewer.image - v0.1.0 -  Monday, April 6th, 2015, 6:48:37 PM 
  The source code, name, and look and feel of the software are Copyright © 2015 Sarine Technologies Ltd. All Rights Reserved. You may not duplicate, copy, reuse, sell or otherwise exploit any portion of the code, content or visual design elements without express written permission from Sarine Technologies Ltd. The terms and conditions of the sarine.com website (http://sarine.com/terms-and-conditions/) apply to the access and use of this software.
  */
 
@@ -24,13 +24,12 @@ sarine.viewer.image - v0.1.1 -  Thursday, May 7th, 2015, 9:19:39 AM
     SarineImage.prototype.first_init = function() {
       var defer, index, name, _i, _len, _ref, _t;
       defer = $.Deferred();
-      defer.notify(this.id + " : start load first image1");
+      defer.notify(this.id + " : start load first image");
       _t = this;
       _ref = this.imagesArr;
       for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
         name = _ref[index];
-        this.fullSrc = this.src.indexOf('##FILE_NAME##') !== -1 ? this.src.replace('##FILE_NAME##', name) : this.src + name;
-        this.loadImage(this.fullSrc).then(function(img) {
+        this.loadImage(this.src + name).then(function(img) {
           var canvas, ctx, imgName;
           canvas = $("<canvas>");
           ctx = canvas[0].getContext('2d');

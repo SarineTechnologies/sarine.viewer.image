@@ -1,6 +1,6 @@
 
 /*!
-sarine.viewer.image - v0.1.2 -  Thursday, May 7th, 2015, 9:49:32 AM 
+sarine.viewer.image - v0.1.2 -  Sunday, June 7th, 2015, 4:06:50 PM 
  The source code, name, and look and feel of the software are Copyright © 2015 Sarine Technologies Ltd. All Rights Reserved. You may not duplicate, copy, reuse, sell or otherwise exploit any portion of the code, content or visual design elements without express written permission from Sarine Technologies Ltd. The terms and conditions of the sarine.com website (http://sarine.com/terms-and-conditions/) apply to the access and use of this software.
  */
 
@@ -75,7 +75,7 @@ sarine.viewer.image - v0.1.2 -  Thursday, May 7th, 2015, 9:49:32 AM
 
     function SarineImage(options) {
       SarineImage.__super__.constructor.call(this, options);
-      this.imagesArr = options.imagesArr;
+      this.imagesArr = options.imagesArr, this.borderRadius = options.borderRadius;
     }
 
     SarineImage.prototype.convertElement = function() {
@@ -101,6 +101,11 @@ sarine.viewer.image - v0.1.2 -  Thursday, May 7th, 2015, 9:49:32 AM
             height: img.height,
             "class": imgName
           });
+          if (_t.borderRadius) {
+            canvas.css({
+              'border-radius': _t.borderRadius
+            });
+          }
           ctx.drawImage(img, 0, 0, img.width, img.height);
           _t.element.append(canvas);
           return defer.resolve(_t);

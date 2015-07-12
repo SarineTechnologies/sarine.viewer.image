@@ -1,5 +1,9 @@
 ###!
+<<<<<<< HEAD
+sarine.viewer.image - v0.2.0 -  Thursday, July 9th, 2015, 1:40:58 PM 
+=======
 sarine.viewer.image - v0.1.0 -  Monday, April 6th, 2015, 6:48:37 PM 
+>>>>>>> master
  The source code, name, and look and feel of the software are Copyright © 2015 Sarine Technologies Ltd. All Rights Reserved. You may not duplicate, copy, reuse, sell or otherwise exploit any portion of the code, content or visual design elements without express written permission from Sarine Technologies Ltd. The terms and conditions of the sarine.com website (http://sarine.com/terms-and-conditions/) apply to the access and use of this software.
 ###
 
@@ -38,14 +42,18 @@ class SarineImage extends Viewer
 	
 	constructor: (options) -> 			
 		super(options)		
-		{@imagesArr} = options	   		
+		{@imagesArr, @borderRadius} = options	   	 	
 
 	convertElement : () ->				
 		@element		
 
 	first_init : ()->
 		defer = $.Deferred() 
+<<<<<<< HEAD
+		defer.notify(@id + " : start load first image1") 	 					
+=======
 		defer.notify(@id + " : start load first image")						
+>>>>>>> master
 		
 		_t = @			
 		for name, index in @imagesArr 
@@ -53,8 +61,9 @@ class SarineImage extends Viewer
 				canvas = $("<canvas>")
 				ctx = canvas[0].getContext('2d')				
 				imgName = img.src.substr((img.src.lastIndexOf("/") + 1), img.src.lastIndexOf("/")).slice(0,-4)	 			
-				canvas.attr({width : img.width, height : img.height, class : imgName})							
-				ctx.drawImage(img, 0, 0, img.width, img.height)
+				canvas.attr({width : img.width, height : img.height, class : imgName})	
+				if _t.borderRadius then canvas.css({'border-radius' : _t.borderRadius})						
+				ctx.drawImage(img, 0, 0, img.width, img.height) 
 				_t.element.append(canvas)
 				defer.resolve(_t)												
 			)

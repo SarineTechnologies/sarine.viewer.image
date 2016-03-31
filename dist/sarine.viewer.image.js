@@ -1,6 +1,6 @@
 
 /*!
-sarine.viewer.image - v0.3.0 -  Sunday, July 12th, 2015, 1:02:24 PM 
+sarine.viewer.image - v0.3.0 -  Thursday, March 31st, 2016, 8:43:17 AM 
  The source code, name, and look and feel of the software are Copyright © 2015 Sarine Technologies Ltd. All Rights Reserved. You may not duplicate, copy, reuse, sell or otherwise exploit any portion of the code, content or visual design elements without express written permission from Sarine Technologies Ltd. The terms and conditions of the sarine.com website (http://sarine.com/terms-and-conditions/) apply to the access and use of this software.
  */
 
@@ -29,11 +29,17 @@ sarine.viewer.image - v0.3.0 -  Sunday, July 12th, 2015, 1:02:24 PM
       _ref = this.imagesArr;
       for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
         name = _ref[index];
-        this.loadImage(this.src + name).then(function(img) {
-          var canvas, ctx, imgName;
+        this.fullSrc = this.src.indexOf('##FILE_NAME##') !== -1 ? this.src.replace('##FILE_NAME##', name) : this.src + name;
+        this.loadImage(this.fullSrc).then(function(img) {
+          var canvas, className, ctx, imgName;
           canvas = $("<canvas>");
           ctx = canvas[0].getContext('2d');
-          imgName = img.src.substr(img.src.lastIndexOf("/") + 1, img.src.lastIndexOf("/")).slice(0, -4);
+          if (img.src.indexOf('?') !== -1) {
+            className = img.src.substr(0, img.src.indexOf('?'));
+            imgName = className.substr(className.lastIndexOf("/") + 1, className.lastIndexOf("/")).slice(0, -4);
+          } else {
+            imgName = img.src.substr(img.src.lastIndexOf("/") + 1, img.src.lastIndexOf("/")).slice(0, -4);
+          }
           canvas.attr({
             width: img.width,
             height: img.height,

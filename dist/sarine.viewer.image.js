@@ -1,6 +1,6 @@
 
 /*!
-sarine.viewer.image - v0.5.0 -  Sunday, July 24th, 2016, 2:21:34 PM 
+sarine.viewer.image - v0.5.0 -  Thursday, September 28th, 2017, 3:55:12 PM 
  The source code, name, and look and feel of the software are Copyright © 2015 Sarine Technologies Ltd. All Rights Reserved. You may not duplicate, copy, reuse, sell or otherwise exploit any portion of the code, content or visual design elements without express written permission from Sarine Technologies Ltd. The terms and conditions of the sarine.com website (http://sarine.com/terms-and-conditions/) apply to the access and use of this software.
  */
 
@@ -24,42 +24,63 @@ sarine.viewer.image - v0.5.0 -  Sunday, July 24th, 2016, 2:21:34 PM
     SarineImage.prototype.first_init = function() {
       var defer, index, name, _i, _len, _ref, _t;
       defer = $.Deferred();
-      defer.notify(this.id + " : start load first image1");
-      _t = this;
-      _ref = this.imagesArr;
-      for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
-        name = _ref[index];
-        this.fullSrc = this.src.indexOf('##FILE_NAME##') !== -1 ? this.src.replace('##FILE_NAME##', name) : this.src + name;
-        this.loadImage(this.fullSrc).then(function(img) {
-          var canvas, className, ctx, imgName;
-          canvas = $("<canvas>");
-          ctx = canvas[0].getContext('2d');
-          if (img.src.indexOf('data:image') !== -1) {
-            imgName = 'no_stone';
-          } else {
-            if (img.src.indexOf('?') !== -1) {
-              className = img.src.substr(0, img.src.indexOf('?'));
-              imgName = className.substr(className.lastIndexOf("/") + 1, className.lastIndexOf("/")).slice(0, -4);
+      if (!this.src) {
+        this.failed();
+        defer.resolve(this);
+      } else {
+        defer.notify(this.id + " : start load first image1");
+        _t = this;
+        _ref = this.imagesArr;
+        for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
+          name = _ref[index];
+          this.fullSrc = this.src.indexOf('##FILE_NAME##') !== -1 ? this.src.replace('##FILE_NAME##', name) : this.src + name;
+          this.loadImage(this.fullSrc).then(function(img) {
+            var canvas, className, ctx, imgName;
+            canvas = $("<canvas>");
+            ctx = canvas[0].getContext('2d');
+            if (img.src.indexOf('data:image') !== -1) {
+              imgName = 'no_stone';
             } else {
-              imgName = img.src.substr(img.src.lastIndexOf("/") + 1, img.src.lastIndexOf("/")).slice(0, -4);
+              if (img.src.indexOf('?') !== -1) {
+                className = img.src.substr(0, img.src.indexOf('?'));
+                imgName = className.substr(className.lastIndexOf("/") + 1, className.lastIndexOf("/")).slice(0, -4);
+              } else {
+                imgName = img.src.substr(img.src.lastIndexOf("/") + 1, img.src.lastIndexOf("/")).slice(0, -4);
+              }
             }
-          }
-          canvas.attr({
-            width: img.width,
-            height: img.height,
-            "class": imgName
-          });
-          if (_t.borderRadius) {
-            canvas.css({
-              'border-radius': _t.borderRadius
+            canvas.attr({
+              width: img.width,
+              height: img.height,
+              "class": imgName
             });
-          }
-          ctx.drawImage(img, 0, 0, img.width, img.height);
-          _t.element.append(canvas);
-          return defer.resolve(_t);
-        });
+            if (_t.borderRadius) {
+              canvas.css({
+                'border-radius': _t.borderRadius
+              });
+            }
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+            _t.element.append(canvas);
+            return defer.resolve(_t);
+          });
+        }
       }
       return defer;
+    };
+
+    SarineImage.prototype.failed = function() {
+      var _t;
+      _t = this;
+      return _t.loadImage(_t.callbackPic).then(function(img) {
+        var canvas;
+        canvas = $("<canvas >");
+        canvas.attr({
+          "class": "no_stone",
+          "width": img.width,
+          "height": img.height
+        });
+        canvas[0].getContext("2d").drawImage(img, 0, 0, img.width, img.height);
+        return _t.element.append(canvas);
+      });
     };
 
     SarineImage.prototype.full_init = function() {

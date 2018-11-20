@@ -30,8 +30,8 @@ class SarineImage extends Viewer
 							className = img.src.substr(0, img.src.indexOf('?'))				
 							imgName = className.substr((className.lastIndexOf("/") + 1), className.lastIndexOf("/")).slice(0,-4)	 			
 						else
-							imgName = img.src.substr((img.src.lastIndexOf("/") + 1), img.src.lastIndexOf("/")).slice(0,-4)	 								
-					
+							imgName = img.src.substr((img.src.lastIndexOf("/") + 1), img.src.lastIndexOf("/")).slice(0,-4)
+
 					canvas.attr({width : img.width, height : img.height, class : imgName})	
 					if _t.borderRadius then canvas.css({'border-radius' : _t.borderRadius})						
 					ctx.drawImage(img, 0, 0, img.width, img.height) 
@@ -48,7 +48,9 @@ class SarineImage extends Viewer
 			_t.element.append(canvas)	
 	full_init : ()-> 
 		defer = $.Deferred()
-		defer.resolve(@)		
+		if(@element.find('.no_stone').length > 0)
+			@element.trigger('noStone')
+		defer.resolve(@)
 		defer
 	play : () -> return		
 	stop : () -> return
